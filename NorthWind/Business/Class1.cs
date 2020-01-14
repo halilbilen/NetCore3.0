@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Entity
+namespace Business
 {
     public class Class1
     {
