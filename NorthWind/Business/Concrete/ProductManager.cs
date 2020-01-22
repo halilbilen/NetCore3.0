@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entity.Concrete;
 using System;
@@ -12,7 +13,12 @@ namespace Business.Concrete
     {
         private IProductDal _productDal;
 
-        public void Add(Product Product)
+        public ProductManager(IProductDal productDal)
+        {
+            _productDal = productDal;
+        }
+
+        public IResult Add(Product Product)
         {
             //Business codes
             _productDal.Add(Product);
@@ -23,24 +29,24 @@ namespace Business.Concrete
             _productDal.Delete(Product);
         }
 
-        public Product GetById(int productId)
-        {
-            return _productDal.Get(filter: p => p.ProductId == productId);
-        }
-
-        public List<Product> GetList()
-        {
-            return _productDal.GetList().ToList();
-        }
-
-        public List<Product> GetListByCategory(int categoryId)
-        {
-            return _productDal.GetList(filter: p => p.CategoryId == categoryId).ToList();
-        }
-
         public void Update(Product Product)
         {
             _productDal.Update(Product);
+        }
+
+        public IDataResult<Product> GetById(int productId)
+        {
+            return new SuccessDataResult<Product>(_productDal.Get(filter: p => p.ProductId == productId));
+        }
+
+        public IDataResult<List<Product>> GetList()
+        {
+            return new SuccessDataResult<List<Product>>(_productDal.GetList().ToList());
+        }
+
+        public IDataResult<List<Product>> GetListByCategory(int categoryId)
+        {
+            return new SuccessDataResult<List<Product>>(_productDal.GetList(filter: p => p.CategoryId == categoryId).ToList());
         }
     }
 }
