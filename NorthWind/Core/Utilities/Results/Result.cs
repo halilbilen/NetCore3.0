@@ -10,7 +10,7 @@ namespace Core.Utilities.Results
         {
             Message = message;
         }
-        public Result (bool success)
+        public Result(bool success)
         {
             Success = success;
         }

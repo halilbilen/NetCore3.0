@@ -29,7 +29,7 @@ namespace WebAPI
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+                c.SwaggerDoc("v2", new OpenApiInfo { Title = "API", Version = "v2" });
             });
         }
 
@@ -44,7 +44,7 @@ namespace WebAPI
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("/swagger/v2/swagger.json", "API V2");
             });
 
             app.UseRouting();
