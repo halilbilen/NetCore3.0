@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.Contants;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entity.Concrete;
@@ -22,16 +23,19 @@ namespace Business.Concrete
         {
             //Business codes
             _productDal.Add(Product);
+            return new SuccessResult(Messages.ProductAdded);
         }
 
-        public void Delete(Product Product)
+        public IResult Delete(Product Product)
         {
             _productDal.Delete(Product);
+            return new SuccessResult(Messages.ProductDeleted);
         }
 
-        public void Update(Product Product)
+        public IResult Update(Product Product)
         {
             _productDal.Update(Product);
+            return new SuccessResult(Messages.ProductUpdated);
         }
 
         public IDataResult<Product> GetById(int productId)

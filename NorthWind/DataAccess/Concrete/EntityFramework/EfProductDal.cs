@@ -9,7 +9,7 @@ using System.Text;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfProductDal : EfBaseRepository<Product, NorthWindContext>, IProductDal
+    public class EfProductDal : EfBaseRepository<Product, NorthwindContext>, IProductDal
     {
 
     }
