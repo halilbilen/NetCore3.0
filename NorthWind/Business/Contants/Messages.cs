@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Entity.Concrete;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -13,5 +14,7 @@ namespace Business.Contants
         public static string CategoryAdded = "Basarili Ekleme";
         public static string CategoryDeleted = "Basarili Silindi";
         public static string CategoryUpdated = "Basarili Guncellendi";
+
+        public static string UserNotFound = "Kullanıcı Bulunamadi";
     }
 }
