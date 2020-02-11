@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Business.Contants
+namespace Business.Constants
 {
     public static class Messages
     {
@@ -16,5 +16,13 @@ namespace Business.Contants
         public static string CategoryUpdated = "Basarili Guncellendi";
 
         public static string UserNotFound = "Kullanıcı Bulunamadi";
+
+        public static string PasswordError = "Şifre Hatali";
+
+        public static string SuccessLogin = "Giris Basarili";
+
+        public static string UserAlreadyExists = "Kullanci Mevcut";
+        public static string UserRegistered = "Kullanici Basarili Kayit";
+        public static string AccessTokenCreated = "Access Token Olusturuldu";
     }
 }
