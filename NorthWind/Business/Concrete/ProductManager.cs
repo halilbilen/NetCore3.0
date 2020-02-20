@@ -23,7 +23,7 @@ namespace Business.Concrete
             _productDal = productDal;
         }
 
-        [ValidationAspect(typeof(ProductValidator))]
+        [ValidationAspect(typeof(ProductValidator), Priority = 2)]
         public IResult Add(Product Product)
         {
             _productDal.Add(Product);
