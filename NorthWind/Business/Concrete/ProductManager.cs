@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
@@ -16,45 +17,53 @@ namespace Business.Concrete
 {
     public class ProductManager : IProductService
     {
-        private IProductDal _productDal;
+        private IProductDal productDal;
 
-        public ProductManager(IProductDal productDal)
+        public ProductManager(IProductDal _productDal)
         {
-            _productDal = productDal;
+            productDal = _productDal;
         }
 
         [ValidationAspect(typeof(ProductValidator), Priority = 2)]
         public IResult Add(Product Product)
         {
-            _productDal.Add(Product);
+            productDal.Add(Product);
             return new SuccessResult(Messages.ProductAdded);
         }
 
         public IResult Delete(Product Product)
         {
-            _productDal.Delete(Product);
+            productDal.Delete(Product);
             return new SuccessResult(Messages.ProductDeleted);
         }
 
         public IResult Update(Product Product)
         {
-            _productDal.Update(Product);
+            productDal.Update(Product);
             return new SuccessResult(Messages.ProductUpdated);
         }
 
         public IDataResult<Product> GetById(int productId)
         {
-            return new SuccessDataResult<Product>(_productDal.Get(filter: p => p.ProductId == productId));
+            return new SuccessDataResult<Product>(productDal.Get(filter: p => p.ProductId == productId));
         }
 
         public IDataResult<List<Product>> GetList()
         {
-            return new SuccessDataResult<List<Product>>(_productDal.GetList().ToList());
+            return new SuccessDataResult<List<Product>>(productDal.GetList().ToList());
         }
 
         public IDataResult<List<Product>> GetListByCategory(int categoryId)
         {
-            return new SuccessDataResult<List<Product>>(_productDal.GetList(filter: p => p.CategoryId == categoryId).ToList());
+            return new SuccessDataResult<List<Product>>(productDal.GetList(filter: p => p.CategoryId == categoryId).ToList());
+        }
+
+        [TransactionScopeAspect]
+        public IResult TransactionalOperation(Product product)
+        {
+            productDal.Update(product);
+            //productDal.Add(product);
+            return new SuccessResult(Messages.ProductUpdated);
         }
     }
 }
