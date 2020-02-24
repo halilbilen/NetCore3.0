@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Core.DependencyResolvers;
+using Core.Extensions;
+using Core.Utilities.IoC;
 using Core.Utilities.Security.Encyption;
 using Core.Utilities.Security.JsonWebToken;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -56,6 +59,10 @@ namespace WebAPI
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v2", new OpenApiInfo { Title = "API", Version = "v2" });
+            });
+            services.AddDepencenyRevolvers(new ICoreModule[]
+            {
+                new CoreModule()
             });
         }
 
