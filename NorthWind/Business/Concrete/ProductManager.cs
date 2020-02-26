@@ -1,13 +1,16 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
+using Core.Extensions;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entity.Concrete;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -26,8 +29,8 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(ProductValidator), Priority = 2)]
-        [CacheRemoveAspect(_pattern:"IProductService.Get")]
-        [CacheRemoveAspect(_pattern:"ICategoryService.Get")]
+        [CacheRemoveAspect(_pattern: "IProductService.Get")]
+        [CacheRemoveAspect(_pattern: "ICategoryService.Get")]
         public IResult Add(Product Product)
         {
             productDal.Add(Product);
@@ -56,7 +59,8 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Product>>(productDal.GetList().ToList());
         }
 
-        [CacheAspect(_duration:10)]
+        [SecuredOperation("Product.List,Admin")]
+        [CacheAspect(_duration: 10)]
         public IDataResult<List<Product>> GetListByCategory(int categoryId)
         {
             return new SuccessDataResult<List<Product>>(productDal.GetList(filter: p => p.CategoryId == categoryId).ToList());

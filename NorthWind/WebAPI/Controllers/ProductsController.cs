@@ -7,6 +7,7 @@ using Entity.Concrete;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Core.Extensions;
 
 namespace WebAPI.Controllers
 {
@@ -22,7 +23,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet(template: "getall")]
-        [Authorize(Roles = "Product.List")]
+        //[Authorize(Roles = "Product.List")]
         public IActionResult GetList()
         {
             var result = productService.GetList();
