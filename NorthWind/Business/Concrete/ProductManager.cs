@@ -3,6 +3,7 @@ using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Perfonmance;
 using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
@@ -54,6 +55,7 @@ namespace Business.Concrete
             return new SuccessDataResult<Product>(productDal.Get(filter: p => p.ProductId == productId));
         }
 
+        [PerfonmanceAspect(5)]
         public IDataResult<List<Product>> GetList()
         {
             return new SuccessDataResult<List<Product>>(productDal.GetList().ToList());
