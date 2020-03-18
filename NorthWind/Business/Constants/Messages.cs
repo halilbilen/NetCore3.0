@@ -23,5 +23,7 @@ namespace Business.Constants
         public static string AccessTokenCreated = "Access Token Olusturuldu";
         public static string ProductNameNotEmpty = "Urun ismi bos olamaz";
         public static string AuthorizationDenied = "Yetki yok";
+
+        public static string ProductNameAlreadyExists = "Urun ismi mevcut";
     }
 }

@@ -10,6 +10,7 @@ using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Extensions;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entity.Concrete;
@@ -34,10 +35,24 @@ namespace Business.Concrete
         [ValidationAspect(typeof(ProductValidator), Priority = 2)]
         [CacheRemoveAspect(_pattern: "IProductService.Get")]
         [CacheRemoveAspect(_pattern: "ICategoryService.Get")]
-        public IResult Add(Product Product)
+        public IResult Add(Product product)
         {
-            productDal.Add(Product);
+            IResult result = BusinessRules.Run(CheckIfProductNameExists(product.ProductName));
+            if (result != null)
+            {
+                return result;
+            }
+            productDal.Add(product);
             return new SuccessResult(Messages.ProductAdded);
+        }
+
+        private IResult CheckIfProductNameExists(string productName)
+        {
+            if (productDal.Get(p => p.ProductName == productName) != null)
+            {
+                return new ErrorResult(Messages.ProductNameAlreadyExists);
+            }
+            return null;
         }
 
         public IResult Delete(Product Product)
@@ -56,7 +71,7 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<Product>(productDal.Get(filter: p => p.ProductId == productId));
         }
-
+        // [LogAspect(typeof(JsonFileLogger))]
         [PerfonmanceAspect(5)]
         public IDataResult<List<Product>> GetList()
         {
@@ -65,7 +80,7 @@ namespace Business.Concrete
 
         //[SecuredOperation("Product.List,Admin")]
         [CacheAspect(_duration: 10)]
-        [LogAspect(typeof(DatabaseLogger))]
+        // [LogAspect(typeof(JsonFileLogger))]
         public IDataResult<List<Product>> GetListByCategory(int categoryId)
         {
             return new SuccessDataResult<List<Product>>(productDal.GetList(filter: p => p.CategoryId == categoryId).ToList());

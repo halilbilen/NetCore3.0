@@ -76,6 +76,7 @@ namespace WebAPI
             }
             app.UseCors(builder => builder.WithOrigins("http://localhost:3000").AllowAnyHeader());
 
+            app.ConfigureCustomExceptionMiddleware();
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using System.Linq;
+using Core.Aspects.Autofac.Logging;
+using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
 
 namespace Core.Utilities.Interceptors
 {
@@ -14,6 +16,7 @@ namespace Core.Utilities.Interceptors
             var classAttributes = type.GetCustomAttributes<MethodInterceptionBaseAttiribute>(inherit: true).ToList();
             var methodAttributes = type.GetMethod(method.Name).GetCustomAttributes<MethodInterceptionBaseAttiribute>(inherit: true).ToList();
             classAttributes.AddRange(methodAttributes);
+            classAttributes.Add(new LogAspect(typeof(JsonFileLogger)));
             return classAttributes.OrderBy(x => x.Priority).ToArray();
         }
     }
